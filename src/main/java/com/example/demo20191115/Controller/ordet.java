@@ -3,8 +3,16 @@ package com.example.demo20191115.Controller;
 import com.example.demo20191115.Domain.TOrder;
 import com.example.demo20191115.Server.testsever;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
 订单表
@@ -25,7 +33,13 @@ public class ordet {
     @GetMapping("/orderlist")
     public  Object orderlist(@RequestParam(value = "page",defaultValue ="1")int page,
                              @RequestParam(value = "size",defaultValue ="10")int size){
-        return testsever.findall();
+        PageHelper.startPage(page, size);
+        List<TOrder> list=testsever.findall();
+        PageInfo<TOrder>pageInfo=new PageInfo<>(list);
+        Map<String,Object> data =new HashMap<>();
+         data.put("total_size",pageInfo.getTotal());
+         data.put("totlal_list",pageInfo.getList());
+        return data;
     }
 
     /**
@@ -34,7 +48,7 @@ public class ordet {
      * @return
      */
     @GetMapping("/orderid")
-    public Object orderid(@RequestParam(value = "page",required = true)int id){
+    public Object orderid(@RequestParam(value = "id",required = true)int id){
 
         return testsever.findbyid(id);
     }
@@ -49,19 +63,16 @@ public class ordet {
      return  testsever.finddelete(id);
     }
 
+
+
     @PutMapping("/orderupdate")
-    public  int orderupdate(int orderid,String  nanme){
-        TOrder order =new TOrder();
-        order.setOrderid(orderid);
-        order.setNanme(nanme);
+    public  int orderupdate(@RequestBody TOrder order){
         return testsever.findupdate(order);
     }
 
     @PostMapping("/orderadd")
-    public  int orderadd(int orderid ,String  nanme){
-        TOrder order =new TOrder();
-        order.setOrderid(orderid);
-        order.setNanme(nanme);
+    public  int orderadd(@RequestBody TOrder order)
+    {
         int rows=testsever.findadd(order);
         System.out.println(order.getOrderid()+"获取保存对象的ID");
         return rows;

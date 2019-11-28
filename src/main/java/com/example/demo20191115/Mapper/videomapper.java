@@ -1,6 +1,7 @@
 package com.example.demo20191115.Mapper;
 
 import com.example.demo20191115.Domain.TOrder;
+import com.example.demo20191115.Provider.testprovider;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -24,8 +25,9 @@ public interface videomapper {
     /*
     修改操作
      */
-    @Update("update t_order set nanme=#{nanme} where orderid=#{orderid}")
-    int findupdate(TOrder order);
+    //@Update("update t_order set nanme=#{nanme} where orderid=#{orderid}")
+    @UpdateProvider(type = testprovider.class,method = "updatetorder")
+     int findupdate(TOrder order);
 
     /*
     删除操作
