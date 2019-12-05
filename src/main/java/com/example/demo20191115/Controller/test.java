@@ -1,8 +1,7 @@
 package com.example.demo20191115.Controller;
 
 import com.example.demo20191115.Config.wechatconfig;
-import com.example.demo20191115.Mapper.videomapper;
-import com.example.demo20191115.Server.testsever;
+import com.example.demo20191115.Server.usersever;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,16 +31,16 @@ public class test {
     }
 
 
-    /*
-    测试数据库连接
-     */
-    @Autowired   //注入查询接口
-    private testsever testsever;
-
-    @GetMapping("/testlistdb")
-    public Object testlistdb(){
-        return  testsever.findbyid(1);
-    }
+//    /*
+//    测试数据库连接
+//     */
+//    @Autowired   //注入查询接口
+//    private usersever usersever;
+//
+//    @GetMapping("/testlistdb")
+//    public Object testlistdb(){
+//        return  usersever.findbyid(1);
+//    }
 
 
 }

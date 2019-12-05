@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 /*
-mybatis 注解
+mybatis 注解  让springboot 知道mapper类在那个路径下
  */
 @MapperScan("com.example.demo20191115.Mapper")
 public class Demo20191115Application {
