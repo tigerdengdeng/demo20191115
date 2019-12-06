@@ -1,11 +1,13 @@
 package com.example.demo20191115.Controller;
 
 import com.example.demo20191115.Domain.TUser;
+import com.example.demo20191115.Domain.common.JsonResult;
 import com.example.demo20191115.Server.usersever;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -29,8 +31,8 @@ public class Usercontrollers {
      * @return  返回符合条件的集合
      */
     @GetMapping("/userlist")
-    public  Object userlist(@RequestParam(value = "page")int page,
-                             @RequestParam(value = "size")int size){
+    public  Object userlist(@RequestParam(value = "page",required = true)int page,
+                             @RequestParam(value = "size",required = true)int size){
         PageHelper.startPage(page, size);
         List<TUser> list= usersever.userfindall();
         PageInfo<TUser>pageInfo=new PageInfo<>(list);
@@ -49,6 +51,47 @@ public class Usercontrollers {
     public Object userid(@RequestParam(value = "id",required = true)int id){
 
         return usersever.userfindbyid(id);
+    }
+
+    /**
+     * 登录操作
+     * @param username 用户名
+     * @param password 密码
+     * @return 返回状态
+     */
+
+    @PostMapping(value = "/login")
+    public  JsonResult userlog(@RequestBody TUser t_user)
+    {
+        JsonResult result=new JsonResult();
+        if(t_user.getUsername()==null)
+        {
+            result.setCode("1");
+            result.setMsg("参数为空");
+            return  result;
+        }
+        if(t_user.getPassword()==null)
+        {
+            result.setCode("1");
+            result.setMsg("参数为空");
+            return  result;
+        }
+        TUser user= usersever.loinguser(t_user.getUsername(),t_user.getPassword());
+        if(user==null)
+        {
+            result.setCode("1");
+            result.setMsg("参数为空");
+            return  result;
+        }else{
+            if(t_user.getUsername().equals(user.getUsername())&&t_user.getPassword().equals((user.getPassword())))
+            {
+                result.setCode("0");
+                result.setMsg("登录成功");
+                return  result;
+            }
+        }
+        return result;
+
     }
 
     /**

@@ -22,9 +22,7 @@ public class Userserverimpl implements usersever {
     }
 
     @Override
-    public List<TUser> userfindbyid(int id) {
-        return usermapper.userfindbyid(id);
-    }
+    public List<TUser> userfindbyid(int id) { return usermapper.userfindbyid(id); }
 
     @Override
     public int userfindupdate(TUser user) {
@@ -38,4 +36,8 @@ public class Userserverimpl implements usersever {
 
     @Override
     public  int userfindadd(TUser user) { return  usermapper.userfindadd(user);}
+
+    @Override
+    public TUser loinguser(String username,String password){return  usermapper.loinguser(username,password);};
+
 }

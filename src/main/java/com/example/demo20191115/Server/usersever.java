@@ -10,4 +10,5 @@ public interface usersever {
     int userfindupdate(TUser user);
     int userfinddelete(int id);
     int userfindadd(TUser user);
+    TUser loinguser(String username,String password);
 }

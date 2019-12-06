@@ -51,4 +51,15 @@ public interface usermapper {
     @Options(useGeneratedKeys = true, keyProperty = "id",keyColumn = "id")
   int userfindadd(TUser user);
 
+    /**
+     * 登录操作
+     * @param username 用户名
+     * @param password 密码
+     * @return 返回状态（0）成功 （1）失败
+     */
+    @Select("select username,password from t_user where username=#{username} and password=#{password}")
+    TUser  loinguser(String username,String password);
+
+
+
 }
