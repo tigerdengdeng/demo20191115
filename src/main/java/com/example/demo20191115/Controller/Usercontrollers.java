@@ -80,7 +80,7 @@ public class Usercontrollers {
         if(user==null)
         {
             result.setCode("1");
-            result.setMsg("参数为空");
+            result.setMsg("用户名或密码错误");
             return  result;
         }else{
             if(t_user.getUsername().equals(user.getUsername())&&t_user.getPassword().equals((user.getPassword())))
