@@ -1,13 +1,13 @@
-package com.example.demo20191115.Controller;
+package com.example.demo20191115.controller;
 
-import com.example.demo20191115.Domain.TUser;
-import com.example.demo20191115.Domain.common.JsonResult;
-import com.example.demo20191115.Server.usersever;
+import com.example.demo20191115.domain.TUser;
+import com.example.demo20191115.domain.common.JsonResult;
+import com.example.demo20191115.server.UserSever;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -19,10 +19,10 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/user/webapi")
-public class Usercontrollers {
+public class UserControllers {
 
     @Autowired   //注入查询接口
-    private usersever usersever;
+    private UserSever usersever;
 
     /**
      * 分页接口
@@ -48,7 +48,7 @@ public class Usercontrollers {
      * @return  返回状态
      */
     @GetMapping("/userid")
-    public Object userid(@RequestParam(value = "id",required = true)int id){
+    public Object userId(@RequestParam(value = "id",required = true)int id){
 
         return usersever.userfindbyid(id);
     }
@@ -59,32 +59,39 @@ public class Usercontrollers {
      * @param password 密码
      * @return 返回状态
      */
-
+    /**
+     * redis data 注解
+     */
+    @Autowired
+    private RedisTemplate redisTemplate;
     @PostMapping(value = "/login")
-    public  JsonResult userlog(@RequestBody TUser t_user)
+    public  JsonResult userLog(@RequestBody TUser t_User)
     {
+
         JsonResult result=new JsonResult();
-        if(t_user.getUsername()==null)
+        if(t_User.getUsername()==null)
         {
             result.setCode("1");
             result.setMsg("参数为空");
             return  result;
         }
-        if(t_user.getPassword()==null)
+        if(t_User.getPassword()==null)
         {
             result.setCode("1");
             result.setMsg("参数为空");
             return  result;
         }
-        TUser user= usersever.loinguser(t_user.getUsername(),t_user.getPassword());
+        TUser user= usersever.loinguser(t_User.getUsername(),t_User.getPassword());
         if(user==null)
         {
             result.setCode("1");
             result.setMsg("用户名或密码错误");
             return  result;
         }else{
-            if(t_user.getUsername().equals(user.getUsername())&&t_user.getPassword().equals((user.getPassword())))
+            if(t_User.getUsername().equals(user.getUsername())&&t_User.getPassword().equals((user.getPassword())))
             {
+                //存入Redis
+                redisTemplate.opsForValue().set("user",user);
                 result.setCode("0");
                 result.setMsg("登录成功");
                 return  result;
@@ -100,7 +107,7 @@ public class Usercontrollers {
      * @return  返回状态
      */
     @DeleteMapping("/userdele")
-    public  int userdelete(@RequestParam(value = "id",required = true)int id){
+    public  int userDelete(@RequestParam(value = "id",required = true)int id){
      return  usersever.userfinddelete(id);
     }
 
@@ -111,7 +118,7 @@ public class Usercontrollers {
      * @return   返回状态
      */
     @PutMapping("/userupdate")
-    public  int userupdate(@RequestBody TUser user){ return usersever.userfindupdate(user); }
+    public  int userUpdate(@RequestBody TUser user){ return usersever.userfindupdate(user); }
 
     /**
      * 新增操作
@@ -119,7 +126,7 @@ public class Usercontrollers {
      * @return  返回状态
      */
     @PostMapping("/useradd")
-    public  int useradd(@RequestBody TUser user)
+    public  int userAdd(@RequestBody TUser user)
     {
         int rows= usersever.userfindadd(user);
         System.out.println(user.getId()+"获取保存对象的ID");

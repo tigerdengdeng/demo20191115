@@ -1,4 +1,4 @@
-package com.example.demo20191115.Config;
+package com.example.demo20191115.config;
 
 import com.github.pagehelper.PageHelper;
 

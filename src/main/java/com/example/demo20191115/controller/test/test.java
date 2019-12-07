@@ -1,9 +1,7 @@
-package com.example.demo20191115.Controller;
+package com.example.demo20191115.controller.test;
 
-import com.example.demo20191115.Config.wechatconfig;
-import com.example.demo20191115.Server.usersever;
+import com.example.demo20191115.config.WechatConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +21,7 @@ public class test {
     测试读取配置类；
      */
     @Autowired    //注入配置类
-    private wechatconfig wechatconfig;
+    private WechatConfig wechatconfig;
     @RequestMapping("/testconfig")
     public String testconfig() {
         return wechatconfig.getAppid();

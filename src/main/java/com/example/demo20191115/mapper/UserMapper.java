@@ -1,6 +1,6 @@
-package com.example.demo20191115.Mapper;
-import com.example.demo20191115.Domain.TUser;
-import com.example.demo20191115.Provider.sqlprovider;
+package com.example.demo20191115.mapper;
+import com.example.demo20191115.domain.TUser;
+import com.example.demo20191115.provider.SqlProvider;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /*
 简单的使用注解方式完成  复杂的sql 使用xml
  */
-public interface usermapper {
+public interface UserMapper {
     /**
      * 查询操作
      * @return  返回符合结果集合
@@ -30,7 +30,7 @@ public interface usermapper {
      * @return  返回状态
      */
     //@Update("update t_user set username=#{username} where id=#{id}")
-    @UpdateProvider(type = sqlprovider.class,method = "updatetuser")
+    @UpdateProvider(type = SqlProvider.class,method = "updatetuser")
      int userfindupdate(TUser user);
 
     /**

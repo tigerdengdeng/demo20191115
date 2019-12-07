@@ -1,9 +1,8 @@
-package com.example.demo20191115.Server.impl;
+package com.example.demo20191115.server.impl;
 
-import com.example.demo20191115.Domain.TOrder;
-import com.example.demo20191115.Domain.TUser;
-import com.example.demo20191115.Mapper.usermapper;
-import com.example.demo20191115.Server.usersever;
+import com.example.demo20191115.domain.TUser;
+import com.example.demo20191115.mapper.UserMapper;
+import com.example.demo20191115.server.UserSever;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -12,9 +11,9 @@ import java.util.List;
 实现类
  */
 @Service
-public class Userserverimpl implements usersever {
+public class UserServeriMpl implements UserSever {
     @Autowired   //底层实现
-    private usermapper usermapper;
+    private UserMapper usermapper;
 
     @Override
     public List<TUser> userfindall() {

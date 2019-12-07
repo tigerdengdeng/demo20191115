@@ -1,5 +1,5 @@
-package com.example.demo20191115.Utils;
-import com.example.demo20191115.Domain.TUser;
+package com.example.demo20191115.utils;
+import com.example.demo20191115.domain.TUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * jwt工具类
  */
-public class Jwtutils {
+public class JwtUtils {
     public static final String SUBJECT = "xdclass";
     public static final long EXPIRE = 1000 * 60 * 60 * 24 * 7;//过期时间
     //秘钥

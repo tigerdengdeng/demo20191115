@@ -1,4 +1,4 @@
-package com.example.demo20191115.Domain;
+package com.example.demo20191115.domain;
 import lombok.Data;
 import java.io.Serializable;
 

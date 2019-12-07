@@ -1,15 +1,12 @@
-package com.example.demo20191115.Provider;
+package com.example.demo20191115.provider;
 
-import com.example.demo20191115.Domain.TOrder;
-
-import com.example.demo20191115.Domain.TUser;
-import org.apache.ibatis.annotations.Update;
+import com.example.demo20191115.domain.TUser;
 import org.apache.ibatis.jdbc.SQL;
 
 /*
 动态构建sql语句
  */
-public class sqlprovider {
+public class SqlProvider {
 
     /*
     修改动态SQL语句  根据传入的条件 是否为null 来判断要修改哪些字段

@@ -1,5 +1,6 @@
-package com.example.demo20191115.Config;
+package com.example.demo20191115.config;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -8,16 +9,11 @@ import org.springframework.context.annotation.PropertySource;
 微信配置类
  */
 @Configuration
+@Data
 @PropertySource(value = "classpath:application.properties")   //指定在哪里读取配置文件路径  默认为项目根目录
-public class wechatconfig {
+public class WechatConfig {
 
-    public String getAppid() {
-        return appid;
-    }
 
-    public void setAppid(String appid) {
-        this.appid = appid;
-    }
 
     /*
             读取配置微信ID
@@ -25,13 +21,6 @@ public class wechatconfig {
     @Value("${wx.appid}")
     private String appid;
 
-    public String getAppsecret() {
-        return appsecret;
-    }
-
-    public void setAppsecret(String appsecret) {
-        this.appsecret = appsecret;
-    }
 
     /*
            读取微信配置项

@@ -1,4 +1,4 @@
-package com.example.demo20191115.Domain.common;
+package com.example.demo20191115.domain.common;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
