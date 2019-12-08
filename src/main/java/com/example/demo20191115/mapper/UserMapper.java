@@ -57,7 +57,7 @@ public interface UserMapper {
      * @param password 密码
      * @return 返回状态（0）成功 （1）失败
      */
-    @Select("select username,password from t_user where username=#{username} and password=#{password}")
+    @Select("select * from t_user where username=#{username}")
     TUser  loinguser(String username,String password);
 
 

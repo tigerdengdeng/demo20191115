@@ -11,8 +11,8 @@ import java.util.Properties;
 MyBatis分页 配置类
  */
 @Configuration   //配置类
-public class MyBatisConfig {
-  @Bean   //表示优先用这个Bea
+public class MyBatisPageConfig {
+    @Bean
     public PageHelper pageHelper(){
        PageHelper pageHelper=new PageHelper();
        Properties  P= new Properties();

@@ -1,18 +1,23 @@
 package com.example.demo20191115.controller;
 
+import com.example.demo20191115.config.RedisConfig;
 import com.example.demo20191115.domain.TUser;
 import com.example.demo20191115.domain.common.JsonResult;
 import com.example.demo20191115.server.UserSever;
+import com.example.demo20191115.utils.JwtUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /*
 用户控制器
@@ -23,6 +28,12 @@ public class UserControllers {
 
     @Autowired   //注入查询接口
     private UserSever usersever;
+
+    @Autowired
+    private RedisConfig redisConfig; //注入Redis配置类
+
+     @Autowired
+     private  JwtUtils jwtUtils;//注入jwt
 
     /**
      * 分页接口
@@ -62,8 +73,6 @@ public class UserControllers {
     /**
      * redis data 注解
      */
-    @Autowired
-    private RedisTemplate redisTemplate;
     @PostMapping(value = "/login")
     public  JsonResult userLog(@RequestBody TUser t_User)
     {
@@ -90,9 +99,30 @@ public class UserControllers {
         }else{
             if(t_User.getUsername().equals(user.getUsername())&&t_User.getPassword().equals((user.getPassword())))
             {
-                //存入Redis
-                redisTemplate.opsForValue().set("user",user);
-                result.setCode("0");
+//                //存入Redis  fong 后面需要些L
+//                //redisConfig.set("user",user,  60l, TimeUnit.SECONDS);
+//                //取出Redis
+//              TUser item= (TUser) redisConfig.get("user");
+//              if(item==null)
+//              {
+//                  result.setCode("1");
+//                  result.setMsg("token已经过期");
+//                  return  result;
+//
+//              }
+//                System.out.println(item+"111111");
+//                //删除redis
+//                System.out.println(redisConfig.delete("user"));
+
+                Map<String,Object>map =new HashMap<>();
+                map.put(user.getUsername(),user.getUsername());
+                map.put(user.getPassword(),user.getPassword());
+                map.put("status",1);
+                String token=jwtUtils.geneJsonWebToken(user.getId().toString(),user.getUsername(),map,6000l);
+                System.out.println(token);
+                Claims tokenjm=jwtUtils.checkJwt(token);
+               result.setData(tokenjm.getId());
+                result.setCode("200");
                 result.setMsg("登录成功");
                 return  result;
             }

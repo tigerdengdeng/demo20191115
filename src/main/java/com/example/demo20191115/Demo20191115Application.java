@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 /*
 mybatis 注解  让springboot 知道mapper类在那个路径下
  */
-@MapperScan("com.example.demo20191115.Mapper")
+@MapperScan("com.example.demo20191115.mapper")
 public class Demo20191115Application{
 
     public static void main(String[] args) {
