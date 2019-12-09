@@ -22,14 +22,13 @@ import java.util.Map;
  */
 @Data
 @PropertySource(value = "classpath:application.properties")   //指定在哪里读取配置文件路径  默认为项目根目录
-@Configuration
-public class JwtUtils {
+public class JwtUtils  {
 
     /**
      * 读取配置文件里面配置的私钥
      */
     @Value("${jwtkey}")
-    private    String jwtkey ;
+    private String jwtkey ;
     /**
      * 常量需要全部大写
      */
@@ -43,6 +42,8 @@ public class JwtUtils {
                                           long endDatetime) {
          try {
              JwtBuilder jwtBuilder= Jwts.builder().setId(id).setSubject(name)
+                     .claim("id",id)
+                     .claim("name",name)
                      .setIssuedAt(new Date()) //发行时间
                      .setExpiration(new Date(System.currentTimeMillis()+endDatetime)) //过期时间
                      .signWith(SignatureAlgorithm.HS256,jwtkey); //生成token方式、和初始密; //加密方式
@@ -56,12 +57,6 @@ public class JwtUtils {
       return  null;
 
     }
-
-
-
-
-
-
 
     /**
      * 校验token

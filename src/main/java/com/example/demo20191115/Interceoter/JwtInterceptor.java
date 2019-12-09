@@ -1,8 +1,14 @@
 package com.example.demo20191115.Interceoter;
 
+import com.alibaba.druid.util.StringUtils;
+import com.example.demo20191115.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
+import io.lettuce.core.dynamic.CommandCreationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.naming.CommunicationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,13 +18,35 @@ import javax.servlet.http.HttpServletResponse;
  *  boolean:
  *    true 执行
  *    false 拦截
+ * 1.简化获取token数据的代码编写
+ *   统一用户的权限校验（是否登录）（是否有访问该接口的权限)
  */
-public class JwtInterceptor extends HandlerInterceptorAdapter {
+public class   JwtInterceptor extends HandlerInterceptorAdapter {
+
+        @Autowired
+        private JwtUtils jwtUtils;//注入jwt
 
         //  拦截器请求前调用
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-            // to do something.....
-            return true;
+                //1.通过request 获取请求token信息
+                String authorization=request.getHeader("Authorzation");
+                //2.判断请求头是否为null，或者是否已Bearer开头
+                if(!StringUtils.isEmpty(authorization) && authorization.startsWith("Bearer"))
+                {
+                        //移除空白字符
+                        String token=authorization.replace( "Bearer", "");
+                        //解析token
+                        Claims claims=jwtUtils.checkJwt(token);
+                        if(claims!=null)
+                        {
+                                //绑定到request域
+                                request.setAttribute("user_claims",claims);
+                                return  true;
+
+                        }
+                }
+                throw  new CommunicationException("500");
+               //return true;
         }
 
         // 后处理回调方法，实现处理器的后处理（但在渲染视图之前）

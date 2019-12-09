@@ -1,6 +1,8 @@
 package com.example.demo20191115.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.example.demo20191115.config.RedisConfig;
+import com.example.demo20191115.controller.base.BaseController;
 import com.example.demo20191115.domain.TUser;
 import com.example.demo20191115.domain.common.JsonResult;
 import com.example.demo20191115.server.UserSever;
@@ -9,11 +11,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import io.jsonwebtoken.Claims;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-
+import javax.naming.CommunicationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.transform.Result;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @RequestMapping("/user/webapi")
-public class UserControllers {
+public class UserControllers extends BaseController {
 
     @Autowired   //注入查询接口
     private UserSever usersever;
@@ -53,15 +60,34 @@ public class UserControllers {
         return data;
     }
 
-    /**
-     * 根据条件查询操作
-     * @param id 条件ID
-     * @return  返回状态
-     */
-    @GetMapping("/userid")
-    public Object userId(@RequestParam(value = "id",required = true)int id){
 
-        return usersever.userfindbyid(id);
+    /**
+     * 查询用户ID
+     * @param token
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/userwhere")
+    public Object userId(HttpServletRequest request) throws  Exception{
+        /**
+         * 从请求头当中获取token数据
+         * 1.获取请求头信息：名称=Ahthorization
+         * 2.替换Bearer+空格
+         * 3.解析token
+         * 4.获取clamis
+         */
+        //获取请求头信息，名称=Authorization
+//        String token =request.getHeader("token");
+//      if(StringUtils.isEmpty(token))  //判断是否为空
+//        {
+//       throw  new CommunicationException("500");
+//        }
+//        //去除空格
+//        String toke1n=token.replace( "Bearer", "");
+//        //解析token
+//        Claims claims=jwtUtils.checkJwt(toke1n);
+//       //获取用户id
+      return  usersever.userfindbyid((Integer) claims.get("id"));
     }
 
     /**
@@ -74,7 +100,7 @@ public class UserControllers {
      * redis data 注解
      */
     @PostMapping(value = "/login")
-    public  JsonResult userLog(@RequestBody TUser t_User)
+    public  JsonResult userLog(@RequestBody TUser t_User) throws  Exception
     {
 
         JsonResult result=new JsonResult();
@@ -115,13 +141,14 @@ public class UserControllers {
 //                System.out.println(redisConfig.delete("user"));
 
                 Map<String,Object>map =new HashMap<>();
-                map.put(user.getUsername(),user.getUsername());
-                map.put(user.getPassword(),user.getPassword());
+                map.put("id",user.getId());
+                map.put("name",user.getUsername());
+                map.put("password",user.getPassword());
                 map.put("status",1);
                 String token=jwtUtils.geneJsonWebToken(user.getId().toString(),user.getUsername(),map,6000l);
                 System.out.println(token);
                 Claims tokenjm=jwtUtils.checkJwt(token);
-               result.setData(tokenjm.getId());
+               result.setData(token);
                 result.setCode("200");
                 result.setMsg("登录成功");
                 return  result;
