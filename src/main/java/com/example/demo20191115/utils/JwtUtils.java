@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 
 import java.util.Date;
@@ -21,6 +22,7 @@ import java.util.Map;
  * jwt工具类
  */
 @Data
+@Component  //泛指各种组件，就是说当我们的类不属于各种归类的时候（不属于@Controller、@Services等的时候），我们就可以使用@Component来标注这个类。
 @PropertySource(value = "classpath:application.properties")   //指定在哪里读取配置文件路径  默认为项目根目录
 public class JwtUtils  {
 

@@ -53,4 +53,5 @@ public class JsonResult<T> {
         this.code = "0";
         this.msg = msg;
     }
+
 }

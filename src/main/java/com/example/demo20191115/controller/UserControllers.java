@@ -74,8 +74,9 @@ public class UserControllers extends BaseController {
          * 1.获取请求头信息：名称=Ahthorization
          * 2.替换Bearer+空格
          * 3.解析token
-         * 4.获取clamis
+         * 4.获取clamisr
          */
+        System.out.println(request.getAttribute("user_claims")+"1111111111111111111111");
         //获取请求头信息，名称=Authorization
 //        String token =request.getHeader("token");
 //      if(StringUtils.isEmpty(token))  //判断是否为空
@@ -87,7 +88,8 @@ public class UserControllers extends BaseController {
 //        //解析token
 //        Claims claims=jwtUtils.checkJwt(toke1n);
 //       //获取用户id
-      return  usersever.userfindbyid((Integer) claims.get("id"));
+        System.out.println(id+username+"5555555555");
+      return  usersever.userfindbyid(1);
     }
 
     /**
@@ -147,7 +149,7 @@ public class UserControllers extends BaseController {
                 map.put("status",1);
                 String token=jwtUtils.geneJsonWebToken(user.getId().toString(),user.getUsername(),map,6000l);
                 System.out.println(token);
-                Claims tokenjm=jwtUtils.checkJwt(token);
+//                Claims tokenjm=jwtUtils.checkJwt(token);
                result.setData(token);
                 result.setCode("200");
                 result.setMsg("登录成功");
