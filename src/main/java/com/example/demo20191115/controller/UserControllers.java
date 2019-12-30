@@ -132,6 +132,7 @@ public class UserControllers extends BaseController {
 //                //取出Redis
 //              TUser item= (TUser) redisConfig.get("user");
 //              if(item==null)
+//              if(item==null)
 //              {
 //                  result.setCode("1");
 //                  result.setMsg("token已经过期");
